@@ -1,0 +1,52 @@
+---
+- name: Install wildfly
+  hosts: all
+  collections:
+    - middleware_automation.wildfly
+  vars_files:
+    - vars.yml
+    - apps.yml
+  pre_tasks:
+    - name: "Download apps (if needed)"
+      ansible.builtin.get_url:
+        url: "{{ app.download_url }}"
+        dest: "{{ app.path }}"
+      loop: "{{ wildfly_apps }}"
+      loop_control:
+        loop_var: app
+      when:
+        - wildfly_apps is defined and wildfly_apps | length > 0
+  tasks:
+    - name: "Include wildfly_systemd"
+      ansible.builtin.include_role:
+        name: wildfly_install
+
+- name: Install multiple wildfly services
+  hosts: all
+  collections:
+    - middleware_automation.wildfly
+  vars_files:
+    - vars.yml
+    - apps.yml
+  vars:
+    wildfly_remote_destination_outbound_socket_binding:
+        wildfly0:
+          host: '127.0.0.1'
+          port: 7600
+        wildfly1:
+          host: '127.0.0.1'
+          port: 7700
+        wildfly2:
+          host: '127.0.0.1'
+          port: 7800
+  tasks:
+    - name: "Include wildfly_systemd"
+      ansible.builtin.include_role:
+        name: wildfly_systemd
+      vars:
+        wildfly_node_id: "wildfly-{{ item }}"
+        wildfly_instance_name: "wildfly-{{ item }}"
+        wildfly_service_name: "wildfly-{{ item }}"
+        wildfly_basedir_prefix: "{{ wildfly_instances_home }}/wildfly-{{ item }}/"
+        wildfly_port_range_offset: "{{ 100 * (item) | int }}"
+      loop: "{{ range(0, 2) | list }}"
