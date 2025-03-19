@@ -1,0 +1,7 @@
+---
+collections:
+  - ansible.posix
+  - middleware_automation.wildfly
+#  - middleware_automation.keycloak
+#  - middleware_automation.infinispan
+#  - middleware_automation.jws
