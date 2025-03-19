@@ -1,0 +1,16 @@
+---
+- name: "Fetch results of info app"
+  ansible.builtin.get_url:
+    url: "http://localhost:8{{ id }}80/info"
+    dest: "/tmp/res-{{ id }}.txt"
+  changed_when: False
+
+- name: "Load result of info app"
+  ansible.builtin.slurp:
+    src: "/tmp/res-{{ id }}.txt"
+  changed_when: False
+  register: result
+
+- name: "Display results of info app on node id {{ id }}"
+  ansible.builtin.debug:
+    msg: "{{ result['content'] | b64decode }}"

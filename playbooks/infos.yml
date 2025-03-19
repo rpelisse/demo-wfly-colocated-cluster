@@ -1,0 +1,11 @@
+---
+- name: "Access info app deployed on Wildfly"
+  hosts: all
+  tasks:
+    - name: "Fetch results of info app"
+      ansible.builtin.include_tasks: tasks/info.yml
+      loop:
+        - 0
+        - 1
+      loop_control:
+        loop_var: id
