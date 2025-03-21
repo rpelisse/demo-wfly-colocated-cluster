@@ -1,4 +1,13 @@
+---
 wildfly-configuration:
   system-property:
     JBOSS_ID:
-      value: {{ wildfly_instance_name }}
+      value: "{{ wildfly_instance_name }}"
+  subsystem:
+    messaging-activemq:
+      server:
+        default:
+          jms-queue:
+            BizQueue:
+              entries:
+                - queue/biz
