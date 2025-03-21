@@ -13,7 +13,7 @@
   collections:
     - middleware_automation.wildfly
   pre_tasks:
-    - name: "Download new app"
+    - name: "Download new app from {{ new_app_download_url }}"
       ansible.builtin.get_url:
         url: "{{ new_app_download_url }}" 
         dest: "{{ path_to_new_app }}"
