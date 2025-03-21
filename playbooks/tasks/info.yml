@@ -13,4 +13,5 @@
 
 - name: "Display results of info app on node id {{ id }}"
   ansible.builtin.debug:
-    msg: "{{ result['content'] | b64decode }}"
+    msg: "{{ item }}"
+  loop: "{{ result['content'] | b64decode | split('\n') }}"
