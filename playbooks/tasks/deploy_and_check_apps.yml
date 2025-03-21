@@ -1,0 +1,15 @@
+---
+- name: "Ensure required parameters are provided"
+  ansible.builtin.assert:
+    that:
+      - path_to_app is defined and path_to_app | length > 0
+      - app_path is defined and app_path | length > 0
+    quiet: True
+
+- name: "Deploy app from {{ path_to_app }} on both instances of this target"
+  ansible.builtin.include_tasks: deploy_and_check_app.yml
+  loop:
+    - 0
+    - 1
+  loop_control:
+    loop_var: id

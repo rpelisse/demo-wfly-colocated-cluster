@@ -1,0 +1,38 @@
+---
+- name: "Deploy Info 1.4 or rollback"
+  hosts: all
+  gather_facts: False
+  serial:
+    - 1
+    - 2
+    - "100%"
+  vars:
+    path_to_new_app: /opt/info.war
+    path_to_old_app: /tmp/info.war
+    new_app_download_url: 'https://github.com/rpelisse/simple-servlet/releases/download/1.4.0/info-1.4.war'
+  collections:
+    - middleware_automation.wildfly
+  pre_tasks:
+    - name: "Download new app"
+      ansible.builtin.get_url:
+        url: "{{ new_app_download_url }}" 
+        dest: "{{ path_to_new_app }}"
+
+  tasks:
+    - name: "Update or rollback"
+      block:
+        - name: "Deploy new version"
+          ansible.builtin.include_tasks: tasks/deploy_and_check_apps.yml
+          vars:
+            path_to_app: "{{ path_to_new_app }}"
+            app_path: "/info"
+      rescue:
+
+        - name: "Deploy previous version - in case of failure"
+          ansible.builtin.include_tasks: tasks/deploy_and_check_apps.yml
+          vars:
+            path_to_app: "{{ path_to_old_app }}"
+            app_path: "/info"
+
+        - name: "Interrupt deployment to not compromise the rest of the cluster"
+          ansible.builtin.fail:
