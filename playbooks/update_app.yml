@@ -17,6 +17,7 @@
       ansible.builtin.get_url:
         url: "{{ new_app_download_url }}" 
         dest: "{{ path_to_new_app }}"
+        force: True
 
   tasks:
     - name: "Update or rollback"
