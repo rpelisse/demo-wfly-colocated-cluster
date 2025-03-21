@@ -1,0 +1,3 @@
+/subsystem=messaging-activemq/server=default/jms-queue={{ dlq_name }}:pause
+/subsystem=messaging-activemq/server=default/jms-queue={{ dlq_name }}:move-messages(other-queue-name={{ target_queue }}
+/subsystem=messaging-activemq/server=default/jms-queue={{ dlq_name }}:resume
