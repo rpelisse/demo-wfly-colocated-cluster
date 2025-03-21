@@ -23,4 +23,6 @@
 
     - name: "Display result of CLI scripts execution"
       ansible.builtin.debug:
-        var: cli_result 
+        msg: "{{ cli_result.stdout_lines | join | string }}"
+      when:
+        - cli_result is defined
