@@ -1,0 +1,13 @@
+---
+- name: "Execute query to retrieve Clust Config"
+  ansible.builtin.include_role:
+    name: wildfly_utils
+    tasks_from: jboss_cli.yml
+  vars:
+    jboss_cli_query: "/subsystem=jgroups/channel=ee:read-attribute(name='stack')"
+
+- name: "Display result of CLI scripts execution"
+  ansible.builtin.debug:
+    msg: "{{ cli_result.stdout_lines[2] }}"
+  when:
+    - cli_result is defined
