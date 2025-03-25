@@ -4,10 +4,10 @@
   sources:
     - ansible.eda.url_check:
         urls:
-          - "http://{{ wildfly_host }}:8080/edvige/rest/entry/db_healthcheck"
+          - "http://10.0.148.18:8080/info/"
         delay: 10
   rules:
-    - name: Restart Wildfly if url is not reachable
+    - name: "Restart Wildfly if url is not reachable"
       condition: event.url_check.status == "down"
       action:
         run_job_template:

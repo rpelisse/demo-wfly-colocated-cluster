@@ -1,6 +1,6 @@
 ---
 - name: "Restart Wildfly instance if not running"
-  hosts: all
+  hosts: 10.0.148.18
   tasks:
     - ansible.builtin.debug:
         var: log_entry
