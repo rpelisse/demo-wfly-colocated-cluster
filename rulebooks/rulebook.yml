@@ -1,0 +1,15 @@
+---
+- name: EDA lab
+  hosts: all
+  sources:
+    - ansible.eda.url_check:
+        urls:
+          - "http://{{ wildfly_host }}:8080/edvige/rest/entry/db_healthcheck"
+        delay: 10
+  rules:
+    - name: Restart Wildfly if url is not reachable
+      condition: event.url_check.status == "down"
+      action:
+        run_job_template:
+          name: "EDA Restart Wildfly"
+          organization: "wildfly-cluster"
