@@ -6,8 +6,8 @@
   vars:
     jboss_cli_query: "'deploy --force {{ path_to_app }}'"
     jboss_cli_changed_when: True
-    jboss_cli_controller_port: "{{ (id * 100) + 9990 | int }}" 
- 
+    jboss_cli_controller_port: "{{ (id * 100) + 9990 | int }}"
+
 - name: "Check that app is reachable {{ app_path }} (on instance {{ id }})"
   ansible.builtin.get_url:
     url: "http://localhost:8{{ id }}80{{ app_path }}"

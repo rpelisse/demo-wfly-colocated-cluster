@@ -37,6 +37,3 @@
 
         - name: "Interrupt deployment to not compromise the rest of the cluster"
           ansible.builtin.fail:
-  post_tasks:
-    - name: "Restart all instances of Wildfly"
-      ansible.builtin.include_tasks: tasks/restart_all_instances.yml
