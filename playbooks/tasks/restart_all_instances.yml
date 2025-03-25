@@ -1,0 +1,8 @@
+---
+- name: "Restart all Wildfly instances on target"
+  ansible.builtin.service:
+    name: "wildfly-{{ instance_id }}"
+    state: restarted
+  loop: "{{ range(0, 2) | list }}"
+  loop_control:
+    loop_var: instance_id

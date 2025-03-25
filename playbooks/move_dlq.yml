@@ -2,7 +2,6 @@
 - name: "Move any messages in the DLQ to another queue for processing"
   hosts: all
   gather_facts: False
-  serial: 1
   vars:
     jboss_cli_file: /opt/dql.cli
     jboss_cli_template: templates/dlq.cli.j2
@@ -17,7 +16,7 @@
         dest: "{{ jboss_cli_file }}"
 
     - name: "Running CLI script to move messages from DLQ to {{ jms_queue }}"
-      ansible.builtin.include_role: 
+      ansible.builtin.include_role:
         name: wildfly_utils
         tasks_from: jboss_cli.yml
 

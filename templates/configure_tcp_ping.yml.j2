@@ -2,7 +2,7 @@ wildfly-configuration:
   system-property:
     WILDFLY_CLUSTER_CONFIG:
       value: {{ 'TCPPING' if wildfly_cluser_use_tcpping is defined and wildfly_cluser_use_tcpping else 'UDP' }}
-  socket-binding-group:
+{% if wildfly_cluser_use_tcpping is defined %}  socket-binding-group:
     standard-sockets:
       remote-destination-outbound-socket-binding:
         wildfly0:
@@ -11,7 +11,7 @@ wildfly-configuration:
         wildfly1:
           host: "{{ wildfly_remote_destination_outbound_socket_binding.wildfly1.host }}"
           port: "{{ wildfly_remote_destination_outbound_socket_binding.wildfly1.port }}"
-{% if wildfly_cluser_use_tcpping is defined %}  subsystem:
+  subsystem:
     jgroups:
       stack:
         tcp:
