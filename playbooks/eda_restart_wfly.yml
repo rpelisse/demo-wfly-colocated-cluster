@@ -5,4 +5,4 @@
     - name: Restart Wildfly
       ansible.builtin.service:
         name: wildfly-0
-        state: restarted
+        state: started
