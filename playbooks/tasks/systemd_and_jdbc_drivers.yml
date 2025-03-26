@@ -29,4 +29,4 @@
   loop: "{{ range(0, 2) | list }}"
 
 - name: "Restart all Wildfly instances on target"
-  ansible.builtin.include_tasks: playbooks/tasks/restart_all_instances.yml
+  ansible.builtin.include_tasks: tasks/restart_all_instances.yml

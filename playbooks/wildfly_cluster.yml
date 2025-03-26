@@ -4,9 +4,9 @@
   collections:
     - middleware_automation.wildfly
   vars_files:
-    - vars.yml
-    - apps.yml
-    - jdbc.yml
+    - vars/vars.yml
+    - vars/apps.yml
+    - vars/jdbc.yml
   pre_tasks:
     - name: "Download apps (if needed)"
       ansible.builtin.get_url:
@@ -27,9 +27,9 @@
   collections:
     - middleware_automation.wildfly
   vars_files:
-    - vars.yml
-    - apps.yml
-    - jdbc.yml
+    - vars/vars.yml
+    - vars/apps.yml
+    - vars/jdbc.yml
   vars:
     wildfly_remote_destination_outbound_socket_binding:
         wildfly0:
@@ -39,4 +39,4 @@
           host: '127.0.0.1'
           port: 7700
   tasks:
-    - ansible.builtin.include_tasks: playbooks/tasks/systemd_and_jdbc_drivers.yml
+    - ansible.builtin.include_tasks: tasks/systemd_and_jdbc_drivers.yml
