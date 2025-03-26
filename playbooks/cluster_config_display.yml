@@ -1,6 +1,6 @@
 ---
 - name: "Move any messages in the DLQ to another queue for processing"
-  hosts: all
+  hosts: wildfly
   gather_facts: False
   collections:
     - middleware_automation.wildfly

@@ -1,6 +1,6 @@
 ---
 - name: "Deploy Info 1.4 or rollback"
-  hosts: all
+  hosts: wildfly
   gather_facts: False
   serial:
     - 1

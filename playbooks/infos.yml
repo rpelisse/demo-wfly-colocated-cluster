@@ -1,6 +1,6 @@
 ---
 - name: "Access info app deployed on Wildfly"
-  hosts: all
+  hosts: wildfly
   tasks:
     - name: "Fetch results of info app"
       ansible.builtin.include_tasks: tasks/info.yml
