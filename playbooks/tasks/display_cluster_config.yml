@@ -1,12 +1,16 @@
 ---
+- name: "Ensure required parameter(s) are provided."
+  ansible.builtin.assert:
+    that:
+      - jboss_cli_query is defined and jboss_cli_query | length > 0
+    quiet: True
+
 - name: "Execute query to retrieve Clust Config"
   ansible.builtin.include_role:
     name: wildfly_utils
     tasks_from: jboss_cli.yml
-  vars:
-    jboss_cli_query: "/subsystem=jgroups/channel=ee:read-attribute(name='stack')"
 
-- name: "Display result of CLI scripts execution"
+- name: "Display result of CLI query: {{ jboss_cli_query }}"
   ansible.builtin.debug:
     msg: "{{ cli_result.stdout_lines[2] }}"
   when:
