@@ -1,11 +1,12 @@
 ---
 - name: Install wildfly
-  hosts: all
+  hosts: wildfly
   collections:
     - middleware_automation.wildfly
   vars_files:
     - vars.yml
     - apps.yml
+    - jdbc.yml
   pre_tasks:
     - name: "Download apps (if needed)"
       ansible.builtin.get_url:
@@ -22,12 +23,13 @@
         name: wildfly_install
 
 - name: Install multiple wildfly services
-  hosts: all
+  hosts: wildfly
   collections:
     - middleware_automation.wildfly
   vars_files:
     - vars.yml
     - apps.yml
+    - jdbc.yml
   vars:
     wildfly_remote_destination_outbound_socket_binding:
         wildfly0:
@@ -37,17 +39,4 @@
           host: '127.0.0.1'
           port: 7700
   tasks:
-    - name: "Include wildfly_systemd"
-      ansible.builtin.include_role:
-        name: wildfly_systemd
-      vars:
-        wildfly_node_id: "wildfly-{{ item }}"
-        wildfly_instance_name: "wildfly-{{ item }}"
-        wildfly_service_name: "wildfly-{{ item }}"
-        wildfly_basedir_prefix: "{{ wildfly_instances_home }}/wildfly-{{ item }}/"
-        wildfly_port_range_offset: "{{ 100 * (item) | int }}"
-      loop: "{{ range(0, 2) | list }}"
-
-  post_tasks:
-    - name: "Restart all Wildfly instances on target"
-      ansible.builtin.include_tasks: playbooks/tasks/restart_all_instances.yml
+    - ansible.builtin.include_tasks: playbooks/tasks/systemd_and_jdbc_drivers.yml

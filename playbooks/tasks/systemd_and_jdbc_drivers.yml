@@ -1,0 +1,32 @@
+---
+- ansible.builtin.assert:
+    that:
+      - jdbc_drivers is defined
+    quiet: True
+
+- name: "Install {{ jdbc_drivers | length }} JDBC drivers with wildfly_driver role"
+  ansible.builtin.include_role:
+    name: wildfly_driver
+  #when: jdbc_drivers is defined and jdbc_drivers | length > 0
+  vars:
+    wildfly_driver_module_name: "{{ driver.name }}"
+    wildfly_driver_version: "{{ driver.version }}"
+    wildfly_driver_jar_filename: "{{ driver.jar_file }}"
+    wildfly_driver_jar_url: "{{ driver.url }}"
+  loop: "{{ jdbc_drivers }}"
+  loop_control:
+    loop_var: driver
+
+- name: "Include wildfly_systemd"
+  ansible.builtin.include_role:
+    name: wildfly_systemd
+  vars:
+    wildfly_node_id: "wildfly-{{ item }}"
+    wildfly_instance_name: "wildfly-{{ item }}"
+    wildfly_service_name: "wildfly-{{ item }}"
+    wildfly_basedir_prefix: "{{ wildfly_instances_home }}/wildfly-{{ item }}/"
+    wildfly_port_range_offset: "{{ 100 * (item) | int }}"
+  loop: "{{ range(0, 2) | list }}"
+
+- name: "Restart all Wildfly instances on target"
+  ansible.builtin.include_tasks: playbooks/tasks/restart_all_instances.yml

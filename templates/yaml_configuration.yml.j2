@@ -4,6 +4,30 @@ wildfly-configuration:
     JBOSS_ID:
       value: "{{ wildfly_instance_name }}"
   subsystem:
+    transactions:
+      node-identifier: instance1
+    datasources:
+      jdbc-driver:
+        postgresql:
+          driver-name: postgresql
+          driver-xa-datasource-class-name: org.postgresql.xa.PGXADataSource
+          driver-module-name: org.postgresql
+      data-source:
+        "{{ edvige_ds_name }}":
+          enabled: true
+          jndi-name: "java:jboss/datasources/{{ edvige_ds_name }}"
+          jta: true
+          max-pool-size: "{{ edvige_ds_pool_size }}"
+          min-pool-size: "{{ edvige_ds_pool_min_size }}"
+          connection-url: "jdbc:postgresql://{{ postgres_instance }}/edvige"
+          driver-name: postgresql
+          user-name: "edvige"
+          password: "qwerty"
+          validate-on-match: true
+          background-validation: false
+          background-validation-millis: 10000
+          flush-strategy: FailingConnectionOnly
+          transaction-isolation: TRANSACTION_READ_COMMITTED
     messaging-activemq:
       server:
         default:

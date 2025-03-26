@@ -1,0 +1,6 @@
+---
+- name: "Deploy and maintain PSQL databases"
+  hosts: postgresql
+  vars:
+  roles:
+    - pgsql

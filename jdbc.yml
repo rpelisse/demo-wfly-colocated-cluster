@@ -1,0 +1,11 @@
+---
+postgres_instance: 10.0.150.133:5432
+edvige_ds_name: 'KitchensinkQuickstartDS'
+edvige_ds_pool_size: 20
+edvige_ds_pool_min_size: 2
+postgres_driver_version: 9.4.1212
+jdbc_drivers:
+  - { version: "{{ postgres_driver_version }}",
+      name: 'org.postgresql',
+      jar_file: "postgresql-{{ postgres_driver_version }}.jar",
+      url: "https://repo.maven.apache.org/maven2/org/postgresql/postgresql/{{ postgres_driver_version }}/postgresql-{{ postgres_driver_version }}.jar" }

@@ -1,0 +1,62 @@
+---
+- name: "Install packages"
+  ansible.builtin.package:
+    name: postgresql-server
+    state: present
+  notify: "Start Postgresql"
+  register: res
+
+- name: "Find out if PostgreSQL is initialized"
+  ansible.builtin.stat:
+    path: "/var/lib/pgsql/data/pg_hba.conf"
+  register: postgres_data
+
+- name: "Initialize PostgreSQL"
+  ansible.builtin.shell: "postgresql-setup initdb"
+  when: not postgres_data.stat.exists
+
+- name: "Ensure that config files are deployed"
+  ansible.builtin.template:
+    src: "{{ psql_conf_file.src }}"
+    dest: "{{ psql_conf_file.dest }}"
+  loop:
+    - { src: 'templates/pg_hba.conf.j2', dest: '/var/lib/pgsql/data/pg_hba.conf' }
+    - { src: 'templates/postgresql.conf.j2', dest: '/var/lib/pgsql/data/postgresql.conf' }
+  loop_control:
+    loop_var: psql_conf_file
+  notify: "Restart Postgresql"
+
+- name: "Flush handlers if package was installed"
+  ansible.builtin.meta: flush_handlers
+  when:
+    - res is defined and res.changed is defined and res.changed
+
+- name: "Ensure required python deps for PGSQL handling is installed"
+  ansible.builtin.package:
+    name: python3-psycopg2
+    state: present
+
+- name: "Ensure app db is in place"
+  become: yes
+  become_user: postgres
+  block:
+
+    - name: "Create app database"
+      community.general.postgresql_db:
+        state: present
+        name: "{{ postgresql_db_name }}"
+
+    - name: "Create db user"
+      community.general.postgresql_user:
+        state: present
+        name: "{{ postgresql_db_user }}"
+        password: "{{ postgresql_db_password }}"
+
+    - name: "Grant db user access to app db"
+      community.general.postgresql_privs:
+        type: database
+        database: "{{ postgresql_db_name }}"
+        roles: "{{ postgresql_db_user }}"
+        grant_option: no
+        privs: all
+        state: present
