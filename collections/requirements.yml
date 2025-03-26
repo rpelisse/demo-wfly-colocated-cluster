@@ -1,6 +1,7 @@
 ---
 collections:
   - ansible.posix
+  - community.general
   - middleware_automation.wildfly
 #  - middleware_automation.keycloak
 #  - middleware_automation.infinispan
