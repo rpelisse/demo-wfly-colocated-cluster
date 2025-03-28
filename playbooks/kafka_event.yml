@@ -2,6 +2,14 @@
 - hosts: localhost
   gather_facts: false
   tasks:
-    - name: printing event details
-      debug:
+    - name: "Printing event details"
+      ansible.builtin.debug:
         msg: "{{ ansible_eda.event }}"
+      when:
+        - ansible_eda is defined and ansible_eda.event is defined
+
+    - name: "No event provided"
+      ansible.builtin.debug:
+        msg: "No event provided"
+      when:
+        - not ansible_eda is defined
