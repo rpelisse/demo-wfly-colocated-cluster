@@ -1,0 +1,15 @@
+---
+- name: Listen for events on a webhook
+  hosts: all
+  # Define our source for events
+  sources:
+    - ansible.eda.kafka:
+        topic: ansibledemo
+        host: 10.0.149.4
+        port: 9092
+  rules:
+    - name: Check whether the event body matches kafkademo
+      condition: event.body == "kafkademo"
+      action:
+        run_playbook:
+          name: kafkamessage.yml
