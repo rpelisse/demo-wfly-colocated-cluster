@@ -5,7 +5,7 @@
   sources:
     - ansible.eda.kafka:
         topic: ansibledemo
-        host: 10.0.149.4
+        host: "{{ kafka_server | default('10.0.151.240') }}"
         port: 9092
   rules:
     - name: Check whether the event body matches kafkademo
