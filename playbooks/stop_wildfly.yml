@@ -1,0 +1,19 @@
+---
+- name: "Stop Wildfly Instance {{ instance_id }} on {{ instance_ip }}"
+  hosts: wildfly
+  gather_facts: no
+  tasks:
+    - name: "Ensure required parameters are provided."
+      ansible.builtin.assert:
+        that:
+          - instance_id is defined
+          - instance_ip is defined
+        quiet: True
+
+    - name: "Stop Wildfly Instance ID {{ instance_id }}"
+      ansible.builtin.service:
+        name: "wildfly-{{ instance_id }}"
+        state: stopped
+      when:
+        - ansible_all_ipv4_addresses is defined and ansible_all_ipv4_addresses | length > 0
+        - instance_ip in ansible_all_ipv4_addresses

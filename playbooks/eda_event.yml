@@ -1,0 +1,22 @@
+---
+- name: "Sent a message to Kafka for EDA consumption"
+  hosts: kafka
+  gather_facts: false
+  vars:
+    kafka_home: '/opt/kafka_2.13-3.6.0/'
+    kafka_bin: "{{ kafka_home }}/bin"
+    kafka_script: "{{ kafka_bin }}/kafka-console-producer.sh"
+    topic_name: ansibledemo
+    bootstrap_server: '127.0.0.1:9092'
+    eda_msg: "wildfly {{ msg }}"
+
+  tasks:
+    - name: "Ensure required parameters are provided."
+      ansible.builtin.assert:
+        that:
+          - msg is defined and msg | length > 0
+        quiet: True
+
+    - name: "Sent message to  Kafka message"
+      ansible.builtin.shell:
+        cmd: "echo {{ eda_msg }} | {{ kafka_script }} --bootstrap-server {{ bootstrap_server }} --topic {{ topic_name }}"
