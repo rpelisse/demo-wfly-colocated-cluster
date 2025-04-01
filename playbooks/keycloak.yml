@@ -1,0 +1,10 @@
+---
+- name: "Deploy Keycloak SSO"
+  hosts: keycloak
+  collections:
+    - middleware_automation.keycloak
+  vars:
+    keycloak_admin_password: "remembertochangeme"
+    keycloak_frontend_url: 'http://keycloak:8080/auth/'
+  roles:
+    - middleware_automation.keycloak.keycloak
