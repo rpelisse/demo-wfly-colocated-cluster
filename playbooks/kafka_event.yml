@@ -24,7 +24,7 @@
         name: wildfly_utils
         tasks_from: jboss_cli.yml
       vars:
-        jboss_cli_query: "/system-property=Javaland:add(value='{{ ansible_eda.event | replace('^wildfly ', '') | join | string }}')"
+        jboss_cli_query: "/system-property=Javaland:add(value=\"{{ ansible_eda.event | replace('^wildfly ', '') | join | string }}\")"
 
     - name: "Retrieve new system property value"
       ansible.builtin.include_role:
