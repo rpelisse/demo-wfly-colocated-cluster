@@ -1,0 +1,16 @@
+---
+- name: Listen for events on a webhook
+  hosts: all
+  # Define our source for events
+  sources:
+    - ansible.eda.kafka:
+        topic: ansibledemo
+        host: "{{ kafka_server | default('10.0.151.240') }}"
+        port: 9092
+  rules:
+    - name: Check whether the event body matches kafkademo
+      condition: event.body contains "wildfly"
+      action:
+        run_job_template:
+          name: "EDA Kafka Event"
+          organization: "wildfly-cluster"
