@@ -23,4 +23,4 @@
         tasks_from: jboss_cli.yml
       vars:
         jboss_home: '/opt/keycloak/keycloak-18.0.2/'
-        jboss_cli_query: "/system-property=Javaland:add(value='{{ ansible_eda.event }}')"
+        jboss_cli_query: "/system-property=Javaland:add(value='{{ ansible_eda.event | replace('^wildfly ', '') | join | string }}')"
