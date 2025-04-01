@@ -1,9 +1,9 @@
 ---
 - name: "React on a message sent by Kafka"
   hosts: keycloak
-  gather_facts: false
+  gather_facts: true
   tasks:
-    - name: "Printing event details"
+    - name: "Printing event details on {{ ansible_nodename }}"
       ansible.builtin.debug:
         msg: "{{ ansible_eda.event }}"
       when:
