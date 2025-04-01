@@ -1,7 +1,7 @@
 ---
 - name: "Stop Wildfly Instance {{ instance_id }} on {{ instance_ip }}"
   hosts: wildfly
-  gather_facts: no
+  gather_facts: yes
   tasks:
     - name: "Ensure required parameters are provided."
       ansible.builtin.assert:
