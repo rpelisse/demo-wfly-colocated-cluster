@@ -35,4 +35,4 @@
 
     - name: "Display result"
       ansible.builtin.debug:
-        var: cli_results
+        var: cli_result
