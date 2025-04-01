@@ -5,6 +5,6 @@ collections:
   - community.postgresql
   - middleware_automation.wildfly
   - middleware_automation.amq_streams
-#  - middleware_automation.keycloak
+  - middleware_automation.keycloak
 #  - middleware_automation.infinispan
 #  - middleware_automation.jws
