@@ -9,7 +9,8 @@
   vars:
     path_to_new_app: /opt/info.war
     path_to_old_app: /tmp/info.war
-    new_app_download_url: 'https://github.com/rpelisse/simple-servlet/releases/download/1.4.0/info-1.4.war'
+    new_version: 1.4.0
+    new_app_download_url: "https://github.com/rpelisse/simple-servlet/releases/download/{{ new_version }}/info-{{ new_version | new_version.split('.'))[0:2] | join('.') }}.war"
   collections:
     - middleware_automation.wildfly
   pre_tasks:
