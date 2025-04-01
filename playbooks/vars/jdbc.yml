@@ -1,5 +1,5 @@
 ---
-postgres_instance: 10.0.148.2:5432
+postgres_instance: "{{ postgres_instance_ip | default('10.0.148.27') }}:5432"
 edvige_ds_name: 'KitchensinkQuickstartDS'
 edvige_ds_pool_size: 20
 edvige_ds_pool_min_size: 2
