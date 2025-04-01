@@ -1,6 +1,6 @@
 ---
 - name: "Sent a message to Kafka for EDA consumption"
-  hosts: kafka
+  hosts: keycloak
   gather_facts: false
   vars:
     kafka_home: '/opt/kafka_2.13-3.6.0/'
