@@ -2,6 +2,8 @@
 - name: "React on a message sent by Kafka"
   hosts: keycloak
   gather_facts: true
+  collections:
+    - middleware_automation.wildfly
   tasks:
     - name: "Printing event details on {{ ansible_nodename }}"
       ansible.builtin.debug:
@@ -14,3 +16,11 @@
         msg: "No event provided"
       when:
         - not ansible_eda is defined
+
+    - name: "Add a system property to Keycloak named Javaland={{ ansible_eda.event }}."
+      ansible.builtin.include_role:
+        name: wildfly_utils
+        tasks_from: jboss_cli.yml
+      vars:
+        jboss_home: '/opt/keycloak/keycloak-18.0.2/'
+        jboss_cli_query: "/system-property=Javaland:add(value='{{ ansible_eda.event }}')"
