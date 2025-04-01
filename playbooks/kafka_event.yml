@@ -2,6 +2,8 @@
 - name: "React on a message sent by Kafka"
   hosts: keycloak
   gather_facts: true
+  vars:
+    jboss_home: '/opt/keycloak/keycloak-18.0.2/'
   collections:
     - middleware_automation.wildfly
   tasks:
@@ -22,5 +24,15 @@
         name: wildfly_utils
         tasks_from: jboss_cli.yml
       vars:
-        jboss_home: '/opt/keycloak/keycloak-18.0.2/'
         jboss_cli_query: "/system-property=Javaland:add(value='{{ ansible_eda.event | replace('^wildfly ', '') | join | string }}')"
+
+    - name: "Retrieve new system property value"
+      ansible.builtin.include_role:
+        name: wildfly_utils
+        tasks_from: jboss_cli.yml
+      vars:
+        jboss_cli_query: "/system-property=Javaland:read-resource()"
+
+    - name: "Display result"
+      ansible.builtin.debug:
+        var: cli_results
