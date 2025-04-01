@@ -1,13 +1,14 @@
 ---
 - name: "Restart Wildfly instance if not running"
-  hosts: all
+  hosts: wildfly
+  gather_facts: no
   tasks:
     - name: Restart Wildfly
       ansible.builtin.service:
         name: "wildfly-{{ id }}"
         state: started
       loop:
-        - 0
-        - 1
+        - "0"
+        - "1"
       loop_control:
         loop_var: id
