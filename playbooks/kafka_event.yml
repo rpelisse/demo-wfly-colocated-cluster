@@ -1,5 +1,6 @@
 ---
-- hosts: localhost
+- name: "React on a message sent by Kafka"
+  hosts: keycloak
   gather_facts: false
   tasks:
     - name: "Printing event details"
