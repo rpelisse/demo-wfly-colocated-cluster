@@ -27,7 +27,7 @@
         jboss_cli_query: "{{ query }}"
       loop:
         - "/system-property=Javaland:remove()"
-        - "/system-property=Javaland:add(value=\"{{ ansible_eda.event.body | replace('^wildfly ', '') | join | string }}\")"
+        - "/system-property=Javaland:add(value=\"{{ ansible_eda.event.body | replace('wildfly ', '') | join | string }}\")"
       loop_control:
         loop_var: query
 
